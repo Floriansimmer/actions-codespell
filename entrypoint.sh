@@ -28,6 +28,10 @@ echo "Skipping '${INPUT_SKIP}'"
 if [ "x${INPUT_SKIP}" != "x" ]; then
     command_args="${command_args} --skip ${INPUT_SKIP}"
 fi
+echo "Custom dictionary '${INPUT_DICTIONARY}'"
+if [ "x${INPUT_DICTIONARY}" != "x" ]; then
+    command_args="${command_args} --dictionary ${INPUT_DICTIONARY}"
+fi
 echo "Builtin dictionaries '${INPUT_BUILTIN}'"
 if [ "x${INPUT_BUILTIN}" != "x" ]; then
     command_args="${command_args} --builtin ${INPUT_BUILTIN}"
