@@ -8,6 +8,7 @@ COPY LICENSE \
         /code/
 
 RUN pip install -r /code/requirements.txt
+RUN apk add --no-cache bash
 
 ENTRYPOINT ["/code/entrypoint.sh"]
 CMD []

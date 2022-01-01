@@ -9,6 +9,38 @@ Any warnings or errors will be annotated in the Pull Request.
 uses: codespell-project/actions-codespell@master
 ```
 
+## Usage for checking Pull request
+```
+# GitHub Action to automate the identification of common misspellings in text files.
+# https://github.com/codespell-project/actions-codespell
+# https://github.com/codespell-project/codespell
+
+name: Codespell
+on: 
+  pull_request:
+
+jobs:
+  codespell:
+    name: Check for spelling errors
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Get changed files
+      id: changed-files
+      uses: tj-actions/changed-files@v12.2
+
+    - name: List all changed files
+      run: |
+        for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+          echo "$file was changed"
+        done
+
+    - uses: codespell-project/actions-codespell@master
+      with:
+        path: ${{ steps.changed-files.outputs.all_changed_files }}
+```
+
 ### Parameter: check_filenames
 
 If set, check file names for spelling mistakes as well.
@@ -67,6 +99,17 @@ This parameter is optional; by default `codespell` will use its default selectio
 uses: codespell-project/actions-codespell@master
 with:
   builtin: clear,rare
+```
+
+### Parameter: dictionary
+
+custom dictionary file that contains spelling corrections. If this flag is not specified or equals "-" then the default dictionary is used.
+This parameter is optional;
+
+```
+uses: codespell-project/actions-codespell@master
+with:
+  dictionary: dictionary.txt
 ```
 
 ### Parameter: ignore_words_file
