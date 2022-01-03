@@ -9,7 +9,7 @@ Any warnings or errors will be annotated in the Pull Request.
 uses: codespell-project/actions-codespell@master
 ```
 
-## Usage for checking Pull request
+## Possible use for checking the pull request
 ```
 # GitHub Action to automate the identification of common misspellings in text files.
 # https://github.com/codespell-project/actions-codespell
@@ -17,7 +17,7 @@ uses: codespell-project/actions-codespell@master
 
 name: Codespell
 on: 
-  pull_request:
+  pull_request_target:
 
 jobs:
   codespell:
@@ -30,16 +30,21 @@ jobs:
       id: changed-files
       uses: tj-actions/changed-files@v12.2
 
-    - name: List all changed files
+    - name: Get the latest dictionary
       run: |
-        for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-          echo "$file was changed"
-        done
+        wget https://raw.githubusercontent.com/codespell-project/codespell/master/codespell_lib/data/dictionary.txt
+
+    - name: Get the latest rare dictionary
+      run: |
+        wget https://raw.githubusercontent.com/codespell-project/codespell/master/codespell_lib/data/dictionary_rare.txt    
 
     - uses: codespell-project/actions-codespell@master
       with:
+        dictionary: dictionary.txt,dictionary_rare.txt
         path: ${{ steps.changed-files.outputs.all_changed_files }}
 ```
+
+
 
 ### Parameter: check_filenames
 
@@ -87,6 +92,17 @@ This parameter is optional; by default `codespell` won't skip any files.
 uses: codespell-project/actions-codespell@master
 with:
   skip: foo,bar
+```
+
+### Parameter: dictionary
+
+Comma-separated list of custom dictionaries to use.
+This parameter is optional; by default `codespell` will use the builtin dictionaries.
+
+```
+uses: codespell-project/actions-codespell@master
+with:
+  dictionary: dictionary.txt,dictionary2.txt
 ```
 
 ### Parameter: builtin
